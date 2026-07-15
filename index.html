@@ -215,15 +215,15 @@
     right: 12px;
     bottom: calc(72px + env(safe-area-inset-bottom, 0px));
     z-index: 1000;
-    width: 48px;
-    height: 48px;
-    padding: 0 0 5px;
+    min-width: 94px;
+    height: 42px;
+    padding: 0 13px;
     color: #fff;
-    background: rgba(107, 75, 138, .72);
+    background: rgba(230, 126, 34, .72);
     border: 1px solid rgba(255, 255, 255, .8);
-    border-radius: 50%;
+    border-radius: 21px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
-    font-size: 28px;
+    font-size: 13px;
     line-height: 1;
     font-weight: bold;
     cursor: pointer;
@@ -237,6 +237,16 @@
     opacity: 0;
     pointer-events: none;
     transform: translateY(8px);
+  }
+  .hy-jump-bottom.is-attention {
+    animation: jump-attention .85s ease-in-out 2;
+  }
+  @keyframes jump-attention {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hy-jump-bottom.is-attention { animation: none; }
   }
   .hy-confirm-table {
     width: 100%;
@@ -502,7 +512,7 @@
         よろしければ、画面下の「この内容で送信する」を押してください。
       </p>
       <button type="button" class="hy-jump-bottom" id="confirmJump"
-        aria-label="確認内容の一番下へ" title="確認内容の一番下へ">∨</button>
+        aria-label="確認内容の一番下へ" title="確認内容の一番下へ">一番下へ ↓</button>
     </div>
     <div id="hy-confirm-body"></div>
     <div class="hy-btn-row">
@@ -732,6 +742,7 @@
 
   // ---- 確認画面 ----
   var pendingData = null;
+  var jumpAttentionShown = false;
 
   function esc(s) {
     return String(s)
@@ -778,6 +789,13 @@
     $('applicationNote').style.display = 'none';
     $('hy-form').style.display = 'none';
     $('hy-confirm').style.display = 'block';
+    if (!jumpAttentionShown) {
+      $('confirmJump').classList.add('is-attention');
+      window.setTimeout(function () {
+        $('confirmJump').classList.remove('is-attention');
+      }, 1800);
+      jumpAttentionShown = true;
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
