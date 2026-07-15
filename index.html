@@ -211,23 +211,32 @@
     margin-bottom: 8px;
   }
   .hy-jump-bottom {
-    display: block;
-    width: 100%;
-    max-width: 280px;
-    margin: 12px auto 2px;
-    padding: 10px 14px;
-    color: var(--hy-accent);
-    background: #fff;
-    border: 2px solid #fff;
-    border-radius: 8px;
-    box-shadow: 0 3px 0 rgba(0, 0, 0, .22);
-    font-size: 14px;
+    position: fixed;
+    right: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    padding: 0 0 5px;
+    color: #fff;
+    background: rgba(107, 75, 138, .72);
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+    font-size: 28px;
+    line-height: 1;
     font-weight: bold;
     cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
   }
   .hy-jump-bottom:active {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, .22);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
+  }
+  .hy-jump-bottom.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
   }
   .hy-confirm-table {
     width: 100%;
@@ -492,7 +501,8 @@
         内容をご確認ください。<br>
         よろしければ、画面下の「この内容で送信する」を押してください。
       </p>
-      <button type="button" class="hy-jump-bottom" id="confirmJump">↓ 確認内容の一番下へ</button>
+      <button type="button" class="hy-jump-bottom" id="confirmJump"
+        aria-label="確認内容の一番下へ" title="確認内容の一番下へ">∨</button>
     </div>
     <div id="hy-confirm-body"></div>
     <div class="hy-btn-row">
@@ -825,6 +835,16 @@
   $('confirmJump').addEventListener('click', function () {
     $('confirmSend').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
+
+  // 送信ボタンが画面内に見えたら、移動ボタンは隠す
+  if ('IntersectionObserver' in window) {
+    var jumpObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        $('confirmJump').classList.toggle('is-hidden', entry.isIntersecting);
+      });
+    }, { threshold: 0.6 });
+    jumpObserver.observe($('confirmSend'));
+  }
 
   // ---- 「この内容で送信する」：ここで初めて実際に送信 ----
   $('confirmSend').addEventListener('click', function () {
