@@ -449,7 +449,12 @@
 
       <div class="hy-field">
         <label class="hy-label req" for="meinichi">お亡くなりになった年月日</label>
-        <input type="text" id="meinichi" placeholder="例：令和五年三月十日（西暦でも結構です）">
+        <input type="text" id="meinichi" placeholder="例：令和五年三月十日 または 20230310"
+          aria-describedby="meinichiHint meinichiError">
+        <div class="hy-hint" id="meinichiHint">西暦は8桁で入力してください。例：20230310</div>
+        <div class="hy-error-msg" id="meinichiError">
+          西暦は「20230310」の8桁、または「2023/03/10」の形式でご入力ください。
+        </div>
       </div>
 
       <div class="hy-field">
@@ -666,6 +671,68 @@
     return checked ? checked.value : '';
   }
 
+  // ---- 命日：西暦は8桁または yyyy/mm/dd に統一 ----
+  var MEINICHI_FORMAT_ERROR =
+    '西暦は「20230310」の8桁、または「2023/03/10」の形式でご入力ください。';
+  var MEINICHI_DATE_ERROR = '実在する年月日をご入力ください。';
+
+  function normalizeMeinichiValue(value) {
+    var original = String(value || '').trim();
+    if (!original) return { ok: false, empty: true, value: '' };
+
+    // 和暦入力はそのまま受け付ける
+    if (/^(令和|平成|昭和|大正|明治)/.test(original)) {
+      return { ok: true, value: original };
+    }
+
+    var normalized = original
+      .replace(/[０-９]/g, function (c) {
+        return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+      })
+      .replace(/／/g, '/')
+      .replace(/\s+/g, '');
+
+    var m = normalized.match(/^(\d{4})(\d{2})(\d{2})$/);
+    if (!m) m = normalized.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+    if (!m) return { ok: false, empty: false, message: MEINICHI_FORMAT_ERROR };
+
+    var year = Number(m[1]);
+    var month = Number(m[2]);
+    var day = Number(m[3]);
+    var dt = new Date(year, month - 1, day);
+    if (dt.getFullYear() !== year || dt.getMonth() !== month - 1 || dt.getDate() !== day) {
+      return { ok: false, empty: false, message: MEINICHI_DATE_ERROR };
+    }
+
+    return {
+      ok: true,
+      value: m[1] + '/' + ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2)
+    };
+  }
+
+  function showMeinichiError(message) {
+    var el = $('meinichi');
+    var error = $('meinichiError');
+    el.classList.add('invalid');
+    el.setAttribute('aria-invalid', 'true');
+    error.textContent = message;
+    error.style.display = 'block';
+  }
+
+  $('meinichi').addEventListener('blur', function () {
+    var result = normalizeMeinichiValue(this.value);
+    if (result.empty) return;
+    if (!result.ok) {
+      showMeinichiError(result.message);
+      return;
+    }
+    this.value = result.value;
+    this.classList.remove('invalid');
+    this.removeAttribute('aria-invalid');
+    $('meinichiError').style.display = 'none';
+    saveForm();
+  });
+
   function validate() {
     var errors = [];
     document.querySelectorAll('.invalid').forEach(function (el) {
@@ -695,7 +762,15 @@
     if (!kojinKana.value || !isKana(kojinKana.value)) markInvalid(kojinKana, '故人さまのフリガナ（カタカナ）', errors);
 
     if (!getRadio('gender')) markRadioInvalid('genderGroup', '故人さまの性別', errors);
-    if (!$('meinichi').value.trim()) markInvalid($('meinichi'), 'お亡くなりになった年月日', errors);
+    var meinichiResult = normalizeMeinichiValue($('meinichi').value);
+    if (meinichiResult.empty) {
+      markInvalid($('meinichi'), 'お亡くなりになった年月日', errors);
+    } else if (!meinichiResult.ok) {
+      showMeinichiError(meinichiResult.message);
+      errors.push('お亡くなりになった年月日（入力形式をご確認ください）');
+    } else {
+      $('meinichi').value = meinichiResult.value;
+    }
     if (!getRadio('ihai')) markRadioInvalid('ihaiGroup', 'お位牌の有無', errors);
 
     var touba = getRadio('touba');
