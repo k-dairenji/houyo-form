@@ -87,6 +87,7 @@
     color: var(--hy-ink);
   }
   input.hy-short { width: 8em; }
+  input[type="date"],
   input[type="time"] {
     display: block;
     width: 100%;
@@ -203,10 +204,23 @@
     background: #fff;
     color: var(--hy-accent);
     font-weight: bold;
-    font-size: 15px;
-    border-radius: 4px;
-    padding: 2px 10px;
-    margin-bottom: 6px;
+    font-size: 16px;
+    letter-spacing: .03em;
+    border-radius: 6px;
+    padding: 4px 14px;
+    margin-bottom: 8px;
+  }
+  .hy-jump-bottom {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 7px 14px;
+    color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
   }
   .hy-confirm-table {
     width: 100%;
@@ -461,9 +475,10 @@
       <h2>入力内容のご確認</h2>
       <p>
         <span class="mada">まだ送信は完了していません</span><br>
-        内容をお確かめのうえ、よろしければ一番下の「この内容で送信する」を押してください。<br>
-        直したいところがあれば「修正する」で入力画面に戻れます。
+        内容をご確認ください。<br>
+        よろしければ、画面下の「この内容で送信する」を押してください。
       </p>
+      <button type="button" class="hy-jump-bottom" id="confirmJump">↓ 確認内容の一番下へ</button>
     </div>
     <div id="hy-confirm-body"></div>
     <div class="hy-btn-row">
@@ -790,6 +805,11 @@
     $('applicationNote').style.display = '';
     $('hy-form').style.display = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ---- 確認画面の送信ボタン付近へ移動 ----
+  $('confirmJump').addEventListener('click', function () {
+    $('confirmSend').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
   // ---- 「この内容で送信する」：ここで初めて実際に送信 ----
