@@ -2,6 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>法要・お塔婆申込フォーム｜来迎山 紫雲院 大蓮寺</title>
 <style>
   :root {
     --hy-ink: #333;
@@ -219,6 +222,8 @@
     text-align: left;
     font-size: 15px;
     vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   .hy-confirm-table tr:last-child th, .hy-confirm-table tr:last-child td { border-bottom: none; }
   .hy-confirm-table th {
@@ -485,7 +490,11 @@
   'use strict';
 
   // GAS が配信するときに自動でウェブアプリの URL が入ります
-  var GAS_URL = '<?= scriptUrl ?>';
+  // GAS配信時は自動取得、GitHub Pagesでは公開済みのGAS URLを使う
+  var GAS_TEMPLATE_URL = '<?= scriptUrl ?>';
+  var GAS_URL = GAS_TEMPLATE_URL.indexOf('<?') === -1
+    ? GAS_TEMPLATE_URL
+    : 'https://script.google.com/macros/s/AKfycbygG_AFZyr3uopDp7v5JfovTZb_s6gJn7yZgn3KukAzoK8KpAf9K_b98J_Ml-hyR2OM/exec';
 
   var $ = function (id) { return document.getElementById(id); };
 
