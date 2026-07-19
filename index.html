@@ -916,6 +916,7 @@
     $('applicationNote').style.display = 'none';
     $('hy-form').style.display = 'none';
     $('hy-confirm').style.display = 'block';
+    ensureTurnstile();
     if (!jumpAttentionShown) {
       $('confirmJump').classList.add('is-attention');
       window.setTimeout(function () {
