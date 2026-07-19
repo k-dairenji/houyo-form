@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>法要・お塔婆申込フォーム｜来迎山 紫雲院 大蓮寺</title>
-<script src=\
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <style>
   :root {
     --hy-ink: #333;
@@ -556,12 +556,8 @@
 (function () {
   'use strict';
 
-  // GAS が配信するときに自動でウェブアプリの URL が入ります
-  // GAS配信時は自動取得、GitHub Pagesでは公開済みのGAS URLを使う
-  var GAS_TEMPLATE_URL = '<?= scriptUrl ?>';
-  var GAS_URL = GAS_TEMPLATE_URL.indexOf('<?') === -1
-    ? GAS_TEMPLATE_URL
-    : 'https://script.google.com/macros/s/AKfycbygG_AFZyr3uopDp7v5JfovTZb_s6gJn7yZgn3KukAzoK8KpAf9K_b98J_Ml-hyR2OM/exec';
+  // GitHub Pages から公開済みの GAS ウェブアプリへ送信します
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbygG_AFZyr3uopDp7v5JfovTZb_s6gJn7yZgn3KukAzoK8KpAf9K_b98J_Ml-hyR2OM/exec';
 
   var $ = function (id) { return document.getElementById(id); };
   var MAX_TOUBA_PEOPLE = 20; // 施主を含む
