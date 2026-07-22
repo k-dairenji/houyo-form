@@ -335,7 +335,7 @@
   <div class="hy-note" id="applicationNote">
     <b>お申込みにあたって</b>
     <ul>
-      <li>お寺とお打ち合わせのうえ<b>確定した法要の日時</b>をご記入ください。</li>
+      <li>大蓮寺とお打ち合わせのうえ<b>確定した法要の日時</b>をご記入ください。</li>
       <li>法要の<b>一週間前まで</b>にご送信ください。</li>
       <li>ご不明な点はお電話ください。<br><span style="white-space:nowrap;">☎ 049(222)3990</span></li>
     </ul>
@@ -354,7 +354,7 @@
       <div class="hy-field">
         <label class="hy-label req" for="houyoDate">法要の日にち</label>
         <input type="date" id="houyoDate">
-        <div class="hy-hint">お寺とお打ち合わせ済みの日にちをご記入ください。</div>
+        <div class="hy-hint">大蓮寺とお打ち合わせ済みの日にちをご記入ください。</div>
       </div>
 
       <div class="hy-field">
@@ -417,7 +417,7 @@
       <div class="hy-field">
         <label class="hy-label opt" for="email">メールアドレス</label>
         <input type="email" id="email" autocomplete="email" maxlength="254" placeholder="例：taro@example.com">
-        <div class="hy-hint">ご入力いただくと、受付番号と法要日時のみを控えとしてお送りします。</div>
+        <div class="hy-hint">メールアドレスをご入力いただくと、受付番号とお申込内容を記載した確認メールをお送りします。</div>
       </div>
 
       <div class="hy-field">
@@ -505,7 +505,7 @@
       <legend>その他</legend>
       <div class="hy-field">
         <label class="hy-label opt" for="biko">備考・ご連絡事項</label>
-        <textarea id="biko" rows="4" maxlength="1000" placeholder="お寺へのご連絡事項があればご記入ください。"></textarea>
+        <textarea id="biko" rows="4" maxlength="1000" placeholder="大蓮寺へのご連絡事項があればご記入ください。"></textarea>
       </div>
     </fieldset>
 
@@ -544,7 +544,7 @@
       ありがとうございました。<br>
       受付番号：<strong id="receiptId"></strong><br>
       ご記入の内容で承りました。当日お待ちしております。<br>
-      内容に確認が必要な場合は、お寺よりご連絡いたします。<br>
+      内容に確認が必要な場合は、大蓮寺よりご連絡いたします。<br>
       ご不明な点はお電話ください。<br>
       ☎ 049(222)3990
     </p>
@@ -1027,7 +1027,7 @@
         btn.textContent = 'この内容で送信する';
         delete pendingData.turnstileToken;
         if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
-        alert('送信に失敗しました。' + (err && err.message ? err.message : '') + '\n\nお手数ですが、再度お試しいただくか、お寺までお電話ください。\n☎ 049(222)3990');
+        alert('送信に失敗しました。' + (err && err.message ? err.message : '') + '\n\nお手数ですが、再度お試しいただくか、大蓮寺までお電話ください。\n☎ 049(222)3990');
       });
   });
 
